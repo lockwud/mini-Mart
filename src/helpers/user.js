@@ -30,10 +30,6 @@ const updateUser = async(id,data)=>{
     return user
 };
 
-const deleteUser = async(id)=>{
-    const user = await prisma.user.delete(id)
-}
-
 
 module.exports = {
     addUser,

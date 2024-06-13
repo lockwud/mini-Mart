@@ -16,6 +16,11 @@ const indexRoute = require("./src/routes/index")
 
 app.use("/api", indexRoute)
 
+const indexRoute = require("./src/routes/index");
+
+app.use("/api", indexRoute);
+
+
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`)
 })
