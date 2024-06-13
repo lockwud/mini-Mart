@@ -1,3 +1,4 @@
+const { deleteUser } = require("../controllers/userController");
 const prisma = require("../utils/prisma")
 
 const addUser = async(data)=>{
@@ -26,6 +27,15 @@ const updateUser = async(id,data)=>{
             id
         },
         data
+    })
+    return user
+};
+
+const deleteUser = async(id)=>{
+    const user = await prisma.user.delete({
+        where:{
+            id
+        }
     })
     return user
 };
