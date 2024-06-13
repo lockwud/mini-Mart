@@ -11,6 +11,11 @@ app.use(morgan("dev"))
 app.use(bodyParser.json())
 
 
+const indexRoute = require("./src/routes/index");
+
+app.use("/api", indexRoute);
+
+
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`)
 })
