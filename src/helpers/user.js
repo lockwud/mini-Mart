@@ -1,3 +1,5 @@
+const argon2 = require("argon2")
+const httpstatus = require("../utils/httpstatus");
 const prisma = require("../utils/prisma")
 
 // const addUser = async(data)=>{
@@ -25,7 +27,7 @@ const getUser = async(res)=>{
     return user
 };
 
-const getUserbyId = async(id)=>{
+const getUserById = async(id)=>{
     const user = await prisma.user.findUnique({
         where:{
             id
@@ -43,7 +45,34 @@ const updateUser = async(id,data)=>{
     return user
 };
 
+const deleteUser = async(id)=>{
+    const user = await prisma.user.delete({
+        where:{
+            id
+        }
+    })
+    return user
+};
+const login = async (email) => {
+    const client = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
+    return client;
+  };
+
 
 module.exports = {
-    addUser
+    addUser,
+    getUser,
+    getUserById,
+    updateUser,
+    deleteUser,
+    login
 }
