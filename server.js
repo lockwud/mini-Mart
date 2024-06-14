@@ -16,9 +16,6 @@ const indexRoute = require("./src/routes/index")
 
 app.use("/api", indexRoute)
 
-const indexRoute = require("./src/routes/index");
-
-app.use("/api", indexRoute);
 
 
 app.listen(port,()=>{

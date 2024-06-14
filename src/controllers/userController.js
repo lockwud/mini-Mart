@@ -10,6 +10,7 @@ const {
     getUserById,
     updateUser,
     deleteUser,
+    login
     
 } = require("../helpers/user")
 
@@ -67,5 +68,30 @@ exports.deleteUser = async(req,res,next)=>{
     }catch(error){
         console.log(error)
         next(new customError(500, error));
+    }
+};
+
+exports.signIn = async(req,res,next)=>{
+    const {email, password}= req.body
+    const user = await login(email);
+    if(!user){
+        res.status(httpstatus.UNAUTHORIZED).json({message:"No email found for this user"})
+
+    }
+    else{
+        const isPassword = await argon2.verify(user.password,password)
+        if(!isPassword){
+            res.status(httpstatus.UNAUTHORIZED).json({message:"Invalid password"})
+        }else{
+            delete user.password;
+        const token = signToken(user.id);
+        res.status(httpstatus.OK).json({
+          message: "User succesfully logged in !",
+          username: user.username,
+          email: user.email,
+          token,
+          id: user.id,
+        });
+        }
     }
 };

@@ -1,4 +1,5 @@
-const { deleteUser } = require("../controllers/userController");
+const argon2 = require("argon2")
+const httpstatus = require("../utils/httpstatus");
 const prisma = require("../utils/prisma")
 
 const addUser = async(data)=>{
@@ -39,6 +40,19 @@ const deleteUser = async(id)=>{
     })
     return user
 };
+const login = async (email) => {
+    const client = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
+    return client;
+  };
 
 
 module.exports = {
@@ -46,5 +60,6 @@ module.exports = {
     getUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 }

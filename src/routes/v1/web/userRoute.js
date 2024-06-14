@@ -8,6 +8,7 @@ const {checkAvailability} = require("../../../middlewares/userCheck");
 const isValid = [validationScheme.userValidationRules, validationError.validateRequestSchema];
 
 router.post("/signUp",isValid, checkAvailability, user.signUp)
+router.post("/signIn", user.signIn)
 router.get("/users", user.listUsers)
 router.get("/:id", user.getUserById)
 router.patch("/:id", user.updateUser)
