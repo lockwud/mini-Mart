@@ -13,12 +13,102 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user{
-  id String @id @default(uuid())
-  username String
-  email String @unique
+model User {
+  id          String   @id @default(uuid())
+  username    String
+  email       String   @unique
   phoneNumber String
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  role        Role     @default(user)
+  orders      Order[]
+  Cart        Cart[]
+}
+
+enum Role {
+  user
+  admin
+  courier
+}
+
+model Product {
+  id          Int        @id
+  name        String
+  description String
+  price       Float
+  stock       Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  category    Category[]
+  cartItem    cartItem[]
+}
+
+model Order {
+  id     Int  @unique
+  userID Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  userId     String
+  orderitems oderItem[]
+  Payment    Payment[]
+}
+
+model Category {
+  id       Int       @id
+  name     String
+  products Product[]
+}
+
+model oderItem {
+  id      Int   @id
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id])
+}
+
+model Cart {
+  id     Int    @id
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  cartItem cartItem[]
+}
+
+model cartItem {
+  id        Int     @id
+  cartId    Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+enum orderStatus {
+  PENDING
+  CANCELLED
+  SHIPPED
+  DELIVERED
+}
+
+model Payment {
+  id      Int           @id
+  amount  Float
+  orderId Int
+  order   Order         @relation(fields: [orderId], references: [id])
+  status  paymentStatus
+  method  paymentMethod
+}
+
+enum paymentStatus {
+  PENDING
+  FAILED
+  COMPLETED
+}
+
+enum paymentMethod {
+  MOMO
+  CREDIT_CARD
+  CASH
 }
