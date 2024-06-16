@@ -1,4 +1,4 @@
-const argon2 = require("argon2")
+const argon2 = require("argon2");
 const customError = require("../utils/customErrror");
 const httpstatus = require("../utils/httpstatus");
 const { signToken } = require("../utils/token");

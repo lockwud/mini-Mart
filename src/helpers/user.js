@@ -2,11 +2,24 @@ const argon2 = require("argon2")
 const httpstatus = require("../utils/httpstatus");
 const prisma = require("../utils/prisma")
 
-const addUser = async(data)=>{
-    const user = await prisma.user.create({
-        data
-    })
-    return user
+// const addUser = async(data)=>{
+//     const user = await prisma.user.create({
+//         data
+//     })
+//     return user
+// };
+
+
+const addUser = async (data) => {
+  const user = await prisma.user.create({
+    data: {
+      username: data.username,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+    },
+  });
+  return user;
 };
 
 const getUser = async(res)=>{
